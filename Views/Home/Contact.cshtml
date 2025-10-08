@@ -1,0 +1,333 @@
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title display-font">Get in Touch</h1>
+                    <p class="hero-subtitle">
+                        We'd love to hear from you! Whether you have questions, feedback, or just want to say hello, 
+                        our team is here to help.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-image text-center">
+                    <i class="fas fa-envelope" style="font-size: 12rem; color: rgba(255,255,255,0.1);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="display-font">
+                                <i class="fas fa-paper-plane text-primary"></i> Send us a Message
+                            </h2>
+                            <p class="text-muted">Fill out the form below and we'll get back to you as soon as possible.</p>
+                        </div>
+                        
+                        <form id="contactForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">
+                                        <i class="fas fa-user text-primary"></i> First Name *
+                                    </label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">
+                                        <i class="fas fa-user text-primary"></i> Last Name *
+                                    </label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope text-primary"></i> Email Address *
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">
+                                    <i class="fas fa-tag text-primary"></i> Subject *
+                                </label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="">Select a subject...</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="partnership">Partnership Opportunity</option>
+                                    <option value="bug">Report a Bug</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">
+                                    <i class="fas fa-comment text-primary"></i> Message *
+                                </label>
+                                <textarea class="form-control" id="message" name="message" rows="6" placeholder="Tell us how we can help..." required></textarea>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter">
+                                <label class="form-check-label" for="newsletter">
+                                    I'd like to receive updates about new features and blog posts
+                                </label>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane"></i> Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="display-font">
+                        <i class="fas fa-info-circle text-info"></i> Other Ways to Reach Us
+                    </h2>
+                    <p class="lead text-muted">Choose the method that works best for you</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="contact-card text-center">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope text-primary"></i>
+                            </div>
+                            <h4>Email Support</h4>
+                            <p class="text-muted">Get in touch with our support team</p>
+                            <a href="mailto:support@blogplatform.com" class="btn btn-outline-primary">
+                                support@blogplatform.com
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="contact-card text-center">
+                            <div class="contact-icon">
+                                <i class="fab fa-twitter text-info"></i>
+                            </div>
+                            <h4>Social Media</h4>
+                            <p class="text-muted">Follow us for updates and news</p>
+                            <a href="#" class="btn btn-outline-info">
+                                @@BlogPlatform
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 mb-4">
+                        <div class="contact-card text-center">
+                            <div class="contact-icon">
+                                <i class="fas fa-question-circle text-success"></i>
+                            </div>
+                            <h4>Help Center</h4>
+                            <p class="text-muted">Browse our comprehensive FAQ</p>
+                            <a href="#" class="btn btn-outline-success">
+                                Visit Help Center
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="display-font">
+                        <i class="fas fa-question text-warning"></i> Frequently Asked Questions
+                    </h2>
+                    <p class="lead text-muted">Quick answers to common questions</p>
+                </div>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1">
+                                How do I create my first blog post?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Once you've registered and logged in, click on the "Create Post" button in your dashboard or navigation menu. 
+                                You'll be taken to our intuitive editor where you can write, format, and publish your content.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2">
+                                Is BlogPlatform free to use?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! BlogPlatform is completely free to use. You can create an account, write posts, and engage with the community 
+                                at no cost. We believe in making quality blogging tools accessible to everyone.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3">
+                                Can I customize my blog's appearance?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Currently, all blogs share the same beautiful, responsive design to ensure a consistent reading experience. 
+                                We're working on customization features that will be available in future updates.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4">
+                                How do I report inappropriate content?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                If you encounter content that violates our community guidelines, please use the contact form above or 
+                                email us directly at support@blogplatform.com. We take all reports seriously and will investigate promptly.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Response Time Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <div class="row justify-content-center text-center text-white">
+            <div class="col-lg-8">
+                <h2 class="display-font mb-3">We're Here to Help</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="response-stat">
+                            <h3 class="display-4 fw-bold">24</h3>
+                            <p>Hours Average Response Time</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="response-stat">
+                            <h3 class="display-4 fw-bold">95%</h3>
+                            <p>Customer Satisfaction Rate</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="response-stat">
+                            <h3 class="display-4 fw-bold">7</h3>
+                            <p>Days a Week Support</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="lead mt-4">
+                    Our dedicated support team is committed to providing you with the best possible experience on BlogPlatform.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Simple validation
+            if (!firstName || !lastName || !email || !subject || !message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Simulate form submission
+            alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+            this.reset();
+        });
+    </script>
+    
+    <style>
+        .contact-card {
+            padding: 2rem 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .contact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .response-stat h3 {
+            color: #ffd700;
+        }
+        
+        #contactForm .form-control,
+        #contactForm .form-select {
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        #contactForm .form-control:focus,
+        #contactForm .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f3ff;
+            color: #0056b3;
+        }
+    </style>
+}

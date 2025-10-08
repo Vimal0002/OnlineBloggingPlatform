@@ -1,0 +1,489 @@
+@model OnlineBloggingPlatform.ViewModels.BlogPostDetailsViewModel
+@{
+    ViewData["Title"] = Model.BlogPost.Title;
+}
+
+<div class="container page-transition">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Main Post Content -->
+            <article class="blog-post">
+                <!-- Post Header -->
+                <header class="post-header mb-4">
+                    @if (Model.BlogPost.Category != null)
+                    {
+                        <a href="@Url.Action("Category", "Blog", new { id = Model.BlogPost.CategoryId })" class="category-badge mb-3 d-inline-block">
+                            <i class="@Model.BlogPost.Category.IconClass"></i> @Model.BlogPost.Category.Name
+                        </a>
+                    }
+                    
+                    <h1 class="display-font post-title mb-3">@Model.BlogPost.Title</h1>
+                    
+                    <div class="post-meta-detailed">
+                        <div class="author-info d-flex align-items-center mb-3">
+                            <div class="author-avatar me-3">
+                                @if (!string.IsNullOrEmpty(Model.BlogPost.User.ProfileImageUrl))
+                                {
+                                    <img src="@Model.BlogPost.User.ProfileImageUrl" alt="@Model.BlogPost.User.FirstName" class="rounded-circle" width="50" height="50">
+                                }
+                                else
+                                {
+                                    <div class="avatar-placeholder rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </div>
+                                }
+                            </div>
+                            <div class="author-details">
+                                <h6 class="mb-0 fw-bold">@Model.BlogPost.User.FirstName @Model.BlogPost.User.LastName</h6>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar"></i> @Model.BlogPost.PublishedAt?.ToString("MMMM dd, yyyy")
+                                    <i class="fas fa-clock ms-2"></i> @((DateTime.Now - Model.BlogPost.CreatedAt).Days) days ago
+                                    <i class="fas fa-eye ms-2"></i> @Model.BlogPost.ViewCount views
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(Model.BlogPost.Excerpt))
+                    {
+                        <div class="post-excerpt alert alert-info">
+                            <i class="fas fa-info-circle"></i> @Model.BlogPost.Excerpt
+                        </div>
+                    }
+                </header>
+
+                <!-- Featured Image -->
+                @if (!string.IsNullOrEmpty(Model.BlogPost.FeaturedImageUrl))
+                {
+                    <div class="post-featured-image mb-4">
+                        <img src="@Model.BlogPost.FeaturedImageUrl" alt="@Model.BlogPost.Title" class="img-fluid rounded">
+                    </div>
+                }
+
+                <!-- Post Content -->
+                <div class="post-content">
+                    @Html.Raw(Model.BlogPost.Content)
+                </div>
+
+                <!-- Post Tags -->
+                @if (!string.IsNullOrEmpty(Model.BlogPost.Tags))
+                {
+                    <div class="post-tags mt-4 pt-3 border-top">
+                        <h6 class="mb-2"><i class="fas fa-tags"></i> Tags:</h6>
+                        @foreach (var tag in Model.BlogPost.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <span class="badge bg-secondary me-2 mb-2">#@tag.Trim()</span>
+                        }
+                    </div>
+                }
+
+                <!-- Post Actions -->
+                <div class="post-actions mt-4 pt-3 border-top">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="share-buttons">
+                                <span class="me-2">Share:</span>
+                                <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Share on Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-info me-1" title="Share on Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Share on LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary" title="Copy Link">
+                                    <i class="fas fa-link"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <button class="btn btn-outline-danger btn-sm" title="Like this post">
+                                <i class="fas fa-heart"></i> Like
+                            </button>
+                            <button class="btn btn-outline-warning btn-sm ms-1" title="Bookmark this post">
+                                <i class="fas fa-bookmark"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Author Bio -->
+            <div class="author-bio card mt-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            @if (!string.IsNullOrEmpty(Model.BlogPost.User.ProfileImageUrl))
+                            {
+                                <img src="@Model.BlogPost.User.ProfileImageUrl" alt="@Model.BlogPost.User.FirstName" class="rounded-circle" width="80" height="80">
+                            }
+                            else
+                            {
+                                <div class="avatar-placeholder-large rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-user text-muted" style="font-size: 2rem;"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="col">
+                            <h5 class="mb-1">@Model.BlogPost.User.FirstName @Model.BlogPost.User.LastName</h5>
+                            <p class="text-muted mb-2">
+                                @if (!string.IsNullOrEmpty(Model.BlogPost.User.Bio))
+                                {
+                                    @Model.BlogPost.User.Bio
+                                }
+                                else
+                                {
+                                    <span>This author hasn't added a bio yet.</span>
+                                }
+                            </p>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar"></i> Member since @Model.BlogPost.User.DateJoined.ToString("MMMM yyyy")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="comments-section mt-5">
+                <h4 class="display-font mb-4">
+                    <i class="fas fa-comments"></i> Comments (@Model.Comments.Count())
+                </h4>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <!-- Add Comment Form -->
+                    <div class="add-comment-form card mb-4">
+                        <div class="card-body">
+                            <h6 class="card-title">Add a Comment</h6>
+                            <form id="commentForm">
+                                <input type="hidden" name="blogPostId" value="@Model.BlogPost.Id" />
+                                <div class="mb-3">
+                                    <textarea class="form-control" name="content" rows="4" placeholder="Share your thoughts..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-comment"></i> Post Comment
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> Please <a href="@Url.Action("Login", "Account")">log in</a> to leave a comment.
+                    </div>
+                }
+
+                <!-- Comments List -->
+                @if (Model.Comments.Any())
+                {
+                    <div class="comments-list">
+                        @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null))
+                        {
+                            <div class="comment mb-4">
+                                <div class="comment-header d-flex align-items-start">
+                                    <div class="comment-avatar me-3">
+                                        @if (!string.IsNullOrEmpty(comment.User.ProfileImageUrl))
+                                        {
+                                            <img src="@comment.User.ProfileImageUrl" alt="@comment.User.FirstName" class="rounded-circle" width="40" height="40">
+                                        }
+                                        else
+                                        {
+                                            <div class="avatar-placeholder-small rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="fas fa-user text-muted"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="comment-body flex-grow-1">
+                                        <div class="comment-meta mb-2">
+                                            <strong>@comment.User.FirstName @comment.User.LastName</strong>
+                                            <small class="text-muted ms-2">
+                                                <i class="fas fa-clock"></i> @comment.CreatedAt.ToString("MMM dd, yyyy 'at' h:mm tt")
+                                            </small>
+                                        </div>
+                                        <div class="comment-content">
+                                            <p class="mb-2">@comment.Content</p>
+                                        </div>
+                                        <div class="comment-actions">
+                                            @if (User.Identity?.IsAuthenticated == true)
+                                            {
+                                                <button class="btn btn-link btn-sm text-muted p-0">
+                                                    <i class="fas fa-reply"></i> Reply
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Nested replies would go here -->
+                                @foreach (var reply in Model.Comments.Where(c => c.ParentCommentId == comment.Id))
+                                {
+                                    <div class="comment-reply ms-5 mt-3 pt-3 border-top">
+                                        <div class="comment-header d-flex align-items-start">
+                                            <div class="comment-avatar me-3">
+                                                @if (!string.IsNullOrEmpty(reply.User.ProfileImageUrl))
+                                                {
+                                                    <img src="@reply.User.ProfileImageUrl" alt="@reply.User.FirstName" class="rounded-circle" width="30" height="30">
+                                                }
+                                                else
+                                                {
+                                                    <div class="avatar-placeholder-xs rounded-circle d-flex align-items-center justify-content-center">
+                                                        <i class="fas fa-user text-muted" style="font-size: 0.8rem;"></i>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="comment-body flex-grow-1">
+                                                <div class="comment-meta mb-2">
+                                                    <strong>@reply.User.FirstName @reply.User.LastName</strong>
+                                                    <small class="text-muted ms-2">
+                                                        <i class="fas fa-clock"></i> @reply.CreatedAt.ToString("MMM dd, yyyy 'at' h:mm tt")
+                                                    </small>
+                                                </div>
+                                                <div class="comment-content">
+                                                    <p class="mb-0">@reply.Content</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="fas fa-comments text-muted" style="font-size: 3rem; opacity: 0.3;"></i>
+                        <p class="text-muted mt-2">No comments yet. Be the first to share your thoughts!</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 100px;">
+                <!-- Related Posts -->
+                @if (Model.RelatedPosts.Any())
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-newspaper"></i> Related Posts</h5>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var relatedPost in Model.RelatedPosts.Take(5))
+                            {
+                                <div class="related-post mb-3 pb-3 @(Model.RelatedPosts.Last() != relatedPost ? "border-bottom" : "")">
+                                    <h6 class="mb-2">
+                                        <a href="@Url.Action("Post", "Blog", new { slug = relatedPost.Slug })" class="text-decoration-none">
+                                            @(relatedPost.Title.Length > 60 ? relatedPost.Title.Substring(0, 60) + "..." : relatedPost.Title)
+                                        </a>
+                                    </h6>
+                                    <small class="text-muted">
+                                        <i class="fas fa-eye"></i> @relatedPost.ViewCount views
+                                        <i class="fas fa-calendar ms-2"></i> @relatedPost.PublishedAt?.ToString("MMM dd")
+                                    </small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Table of Contents -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-list"></i> Table of Contents</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="tableOfContents">
+                            <p class="text-muted">Content outline will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post Stats -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-chart-line"></i> Post Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-item d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="fas fa-eye text-primary"></i> Views</span>
+                            <strong>@Model.BlogPost.ViewCount</strong>
+                        </div>
+                        <div class="stat-item d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="fas fa-comments text-info"></i> Comments</span>
+                            <strong>@Model.Comments.Count()</strong>
+                        </div>
+                        <div class="stat-item d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="fas fa-calendar text-success"></i> Published</span>
+                            <strong>@Model.BlogPost.PublishedAt?.ToString("MMM dd, yyyy")</strong>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.BlogPost.Tags))
+                        {
+                            <div class="stat-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-tags text-warning"></i> Tags</span>
+                                <strong>@Model.BlogPost.Tags.Split(',').Length</strong>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Comment form handler
+        document.getElementById('commentForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Comment functionality would be implemented here with AJAX.');
+        });
+
+        // Generate table of contents
+        document.addEventListener('DOMContentLoaded', function() {
+            const headings = document.querySelectorAll('.post-content h1, .post-content h2, .post-content h3, .post-content h4');
+            const toc = document.getElementById('tableOfContents');
+            
+            if (headings.length > 0) {
+                let tocHTML = '<ul class="list-unstyled">';
+                headings.forEach((heading, index) => {
+                    const id = 'heading-' + index;
+                    heading.id = id;
+                    const level = parseInt(heading.tagName.substring(1));
+                    const indent = (level - 1) * 15;
+                    tocHTML += `<li style="margin-left: ${indent}px; margin-bottom: 8px;">
+                        <a href="#${id}" class="text-decoration-none text-muted">
+                            ${heading.textContent}
+                        </a>
+                    </li>`;
+                });
+                tocHTML += '</ul>';
+                toc.innerHTML = tocHTML;
+            }
+
+            // Smooth scrolling for TOC links
+            toc.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const targetId = e.target.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .avatar-placeholder {
+            width: 50px;
+            height: 50px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+        }
+        
+        .avatar-placeholder-large {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+        }
+        
+        .avatar-placeholder-small {
+            width: 40px;
+            height: 40px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        
+        .avatar-placeholder-xs {
+            width: 30px;
+            height: 30px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .post-content h1,
+        .post-content h2,
+        .post-content h3,
+        .post-content h4,
+        .post-content h5,
+        .post-content h6 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .post-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .post-content blockquote {
+            border-left: 4px solid #007bff;
+            padding: 1rem;
+            margin: 2rem 0;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .post-content pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .comment {
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .comment:hover {
+            border-color: #007bff;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .category-badge:hover {
+            background: rgba(0, 123, 255, 0.2);
+            color: #0056b3;
+        }
+        
+        .share-buttons .btn {
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+}

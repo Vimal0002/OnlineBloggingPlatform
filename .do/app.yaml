@@ -1,0 +1,19 @@
+name: online-blogging-platform
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: your-username/OnlineBloggingPlatform
+    branch: main
+  run_command: dotnet OnlineBloggingPlatform.dll
+  environment_slug: dotnet
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  envs:
+  - key: ASPNETCORE_ENVIRONMENT
+    value: Production
+  - key: ASPNETCORE_URLS
+    value: http://+:8080
+  http_port: 8080
+  routes:
+  - path: /
