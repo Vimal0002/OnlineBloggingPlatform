@@ -60,4 +60,31 @@ namespace OnlineBloggingPlatform.ViewModels
         public string? RequestId { get; set; }
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
+
+    public class AccountSettingsViewModel
+    {
+        [Required]
+        [StringLength(100)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email Address")]
+        public string Email { get; set; } = string.Empty;
+
+        [StringLength(500)]
+        [Display(Name = "Bio")]
+        public string? Bio { get; set; }
+
+        [Url]
+        [StringLength(2000)]
+        [Display(Name = "Profile Image URL")]
+        public string? ProfileImageUrl { get; set; }
+    }
 }

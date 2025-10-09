@@ -1,0 +1,436 @@
+@model OnlineBloggingPlatform.ViewModels.AccountSettingsViewModel
+@{
+    ViewData["Title"] = "Account Settings";
+}
+
+<div class="container-fluid px-0">
+    <div class="hero-section bg-gradient-primary text-white py-4 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-6 fw-bold mb-2">
+                        <i class="fas fa-cog me-2"></i>
+                        Account Settings
+                    </h1>
+                    <p class="lead mb-0">Manage your account information and preferences</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-light">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-user-cog me-2"></i>
+                            Account Settings
+                        </h3>
+                    </div>
+                    <div class="card-body p-4">
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>
+                                @TempData["Success"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                @TempData["Error"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <form asp-action="Settings" method="post" class="needs-validation" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                            
+                            <!-- Personal Information Section -->
+                            <div class="settings-section mb-5">
+                                <h5 class="section-title fw-bold text-primary mb-3">
+                                    <i class="fas fa-user me-2"></i>
+                                    Personal Information
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="FirstName" class="form-label fw-bold">
+                                            <i class="fas fa-user text-primary me-1"></i>
+                                            First Name
+                                        </label>
+                                        <input asp-for="FirstName" class="form-control form-control-lg" 
+                                               placeholder="Enter your first name" required>
+                                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="LastName" class="form-label fw-bold">
+                                            <i class="fas fa-user text-primary me-1"></i>
+                                            Last Name
+                                        </label>
+                                        <input asp-for="LastName" class="form-control form-control-lg" 
+                                               placeholder="Enter your last name" required>
+                                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label fw-bold">
+                                        <i class="fas fa-envelope text-primary me-1"></i>
+                                        Email Address
+                                    </label>
+                                    <input asp-for="Email" type="email" class="form-control form-control-lg" 
+                                           placeholder="Enter your email address" required>
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle text-info me-1"></i>
+                                        This email will be used for login and notifications
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="Bio" class="form-label fw-bold">
+                                        <i class="fas fa-comment-alt text-primary me-1"></i>
+                                        Bio
+                                    </label>
+                                    <textarea asp-for="Bio" class="form-control" rows="4" 
+                                              placeholder="Tell us about yourself... (optional)"></textarea>
+                                    <span asp-validation-for="Bio" class="text-danger small"></span>
+                                    <div class="form-text">
+                                        <i class="fas fa-lightbulb text-warning me-1"></i>
+                                        A short bio helps readers get to know you better
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile Image Section -->
+                            <div class="settings-section mb-5">
+                                <h5 class="section-title fw-bold text-primary mb-3">
+                                    <i class="fas fa-image me-2"></i>
+                                    Profile Image
+                                </h5>
+                                
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 text-center mb-3">
+                                        <div class="profile-preview">
+                                            @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                                            {
+                                                <img src="@Model.ProfileImageUrl" alt="Profile Preview" 
+                                                     class="rounded-circle profile-preview-img" width="100" height="100">
+                                            }
+                                            else
+                                            {
+                                                <div class="avatar-placeholder rounded-circle">
+                                                    <i class="fas fa-user fa-3x text-muted"></i>
+                                                </div>
+                                            }
+                                        </div>
+                                        <small class="text-muted d-block mt-2">Current Profile Image</small>
+                                    </div>
+                                    
+                                    <div class="col-md-9 mb-3">
+                                        <label asp-for="ProfileImageUrl" class="form-label fw-bold">
+                                            <i class="fas fa-link text-primary me-1"></i>
+                                            Profile Image URL
+                                        </label>
+                                        <input asp-for="ProfileImageUrl" type="url" class="form-control form-control-lg" 
+                                               placeholder="https://example.com/your-photo.jpg" id="profileImageInput">
+                                        <span asp-validation-for="ProfileImageUrl" class="text-danger small"></span>
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle text-info me-1"></i>
+                                            Enter a direct link to your profile image (JPG, PNG, etc.)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="settings-actions pt-4 border-top">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex gap-2">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
+                                                <i class="fas fa-undo me-2"></i>
+                                                Reset Form
+                                            </button>
+                                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                                                <i class="fas fa-times me-2"></i>
+                                                Cancel
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <button type="submit" class="btn btn-primary btn-lg" id="saveBtn">
+                                            <i class="fas fa-save me-2"></i>
+                                            <span class="btn-text">Save Changes</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Additional Settings Card -->
+                <div class="card shadow-sm border-0 mt-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0 text-dark">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Security & Privacy
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="security-item p-3 border rounded">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-key fa-2x text-warning me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1">Change Password</h6>
+                                            <small class="text-muted">Update your account password</small>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <a href="#" class="btn btn-outline-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="security-item p-3 border rounded">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-trash fa-2x text-danger me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1">Delete Account</h6>
+                                            <small class="text-muted">Permanently delete your account</small>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete()">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Profile image preview
+        document.getElementById('profileImageInput')?.addEventListener('input', function() {
+            const url = this.value;
+            const preview = document.querySelector('.profile-preview-img');
+            const placeholder = document.querySelector('.avatar-placeholder');
+            
+            if (url && isValidUrl(url)) {
+                if (preview) {
+                    preview.src = url;
+                } else if (placeholder) {
+                    placeholder.innerHTML = `<img src="${url}" alt="Profile Preview" class="rounded-circle profile-preview-img" width="100" height="100">`;
+                }
+            }
+        });
+
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        const saveBtn = document.getElementById('saveBtn');
+                        
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            // Show processing state
+                            saveBtn.innerHTML = `
+                                <div class="spinner-border spinner-border-sm me-2" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span class="btn-text">Processing...</span>
+                            `;
+                            saveBtn.disabled = true;
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Reset form function
+        function resetForm() {
+            if (confirm('Are you sure you want to reset all changes?')) {
+                document.querySelector('form').reset();
+                document.querySelector('form').classList.remove('was-validated');
+            }
+        }
+
+        // Confirm delete function
+        function confirmDelete() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                alert('Account deletion functionality will be implemented.');
+            }
+        }
+
+        // URL validation helper
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Auto-save draft functionality (optional)
+        let autoSaveTimer;
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('input', function() {
+                clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(function() {
+                    // Auto-save draft to localStorage
+                    const formData = new FormData(document.querySelector('form'));
+                    const data = Object.fromEntries(formData.entries());
+                    localStorage.setItem('accountSettings_draft', JSON.stringify(data));
+                }, 2000);
+            });
+        });
+
+        // Load draft on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const draft = localStorage.getItem('accountSettings_draft');
+            if (draft) {
+                const data = JSON.parse(draft);
+                Object.keys(data).forEach(key => {
+                    const element = document.querySelector(`[name="${key}"]`);
+                    if (element && !element.value) {
+                        element.value = data[key];
+                    }
+                });
+            }
+        });
+
+        // Clear draft on successful save
+        window.addEventListener('beforeunload', function() {
+            if (document.querySelector('.alert-success')) {
+                localStorage.removeItem('accountSettings_draft');
+            }
+        });
+    </script>
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .card {
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .section-title {
+        border-bottom: 2px solid #e9ecef;
+        padding-bottom: 10px;
+    }
+    
+    .settings-section {
+        background: rgba(248, 249, 250, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .avatar-placeholder {
+        width: 100px;
+        height: 100px;
+        background: #f8f9fa;
+        border: 3px dashed #dee2e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    .profile-preview-img {
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .security-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .security-item:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn {
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+    
+    .alert {
+        border-radius: 10px;
+        border: none;
+    }
+    
+    .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+    }
+    
+    @@media (max-width: 768px) {
+        .settings-section {
+            padding: 15px;
+        }
+        
+        .settings-actions .col-md-6 {
+            margin-bottom: 15px;
+        }
+        
+        .security-item {
+            margin-bottom: 15px;
+        }
+    }
+</style>

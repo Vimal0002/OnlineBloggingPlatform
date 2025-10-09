@@ -136,6 +136,79 @@ namespace OnlineBloggingPlatform.Controllers
             return View(user);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Settings()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new AccountSettingsViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email ?? string.Empty,
+                Bio = user.Bio,
+                ProfileImageUrl = user.ProfileImageUrl
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settings(AccountSettingsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Check if email is being changed and if it's already in use
+                if (user.Email != model.Email)
+                {
+                    var existingUser = await _userManager.FindByEmailAsync(model.Email);
+                    if (existingUser != null && existingUser.Id != user.Id)
+                    {
+                        ModelState.AddModelError(nameof(model.Email), "This email address is already in use.");
+                        return View(model);
+                    }
+                }
+
+                // Update user properties
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.Email = model.Email;
+                user.UserName = model.Email; // Keep username in sync with email
+                user.Bio = model.Bio;
+                user.ProfileImageUrl = model.ProfileImageUrl;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = "Your account settings have been updated successfully!";
+                    return RedirectToAction(nameof(Settings));
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
         private IActionResult RedirectToLocal(string? returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
