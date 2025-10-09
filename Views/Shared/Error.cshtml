@@ -1,0 +1,61 @@
+@model OnlineBloggingPlatform.ViewModels.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="error-page">
+                <i class="fas fa-exclamation-triangle text-warning mb-3" style="font-size: 4rem;"></i>
+                <h1 class="display-4 text-danger">Oops!</h1>
+                <h2 class="mb-4">Something went wrong</h2>
+                
+                @if (Model?.ShowRequestId == true)
+                {
+                    <div class="alert alert-info">
+                        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                    </div>
+                }
+                
+                <p class="lead">
+                    We're sorry, but something unexpected happened. 
+                    Please try again or contact support if the problem persists.
+                </p>
+                
+                <div class="mt-4">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary me-2">
+                        <i class="fas fa-home me-1"></i>
+                        Go Home
+                    </a>
+                    <button onclick="history.back()" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Go Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-page {
+        padding: 3rem 0;
+    }
+    
+    .error-page i {
+        animation: pulse 2s infinite;
+    }
+    
+    @@keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.6;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+</style>

@@ -1,0 +1,467 @@
+@model OnlineBloggingPlatform.ViewModels.EditBlogPostViewModel
+@{
+    ViewData["Title"] = "Edit Blog Post";
+}
+
+<div class="container-fluid px-0">
+    <div class="hero-section bg-gradient-primary text-white py-4 mb-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-2">
+                        <i class="fas fa-edit me-2"></i>
+                        Edit Blog Post
+                    </h1>
+                    <p class="lead mb-0">Update your blog post content and settings</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-pencil-alt me-2"></i>
+                            Edit Post: @Model.Title
+                        </h3>
+                    </div>
+                    <div class="card-body p-4">
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>
+                                @TempData["Success"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                @TempData["Error"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                            
+                            <input asp-for="Id" type="hidden" />
+                            <input asp-for="CreatedAt" type="hidden" />
+                            <input asp-for="ViewCount" type="hidden" />
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <!-- Title -->
+                                    <div class="mb-4">
+                                        <label asp-for="Title" class="form-label fw-bold">
+                                            <i class="fas fa-heading text-primary me-2"></i>
+                                            Post Title
+                                        </label>
+                                        <input asp-for="Title" class="form-control form-control-lg" 
+                                               placeholder="Enter an engaging title for your post..." required>
+                                        <span asp-validation-for="Title" class="text-danger small"></span>
+                                        <div class="form-text">
+                                            <i class="fas fa-lightbulb text-warning me-1"></i>
+                                            A great title grabs attention and clearly describes your content
+                                        </div>
+                                    </div>
+
+                                    <!-- Slug -->
+                                    <div class="mb-4">
+                                        <label asp-for="Slug" class="form-label fw-bold">
+                                            <i class="fas fa-link text-primary me-2"></i>
+                                            URL Slug
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-globe"></i>
+                                            </span>
+                                            <input asp-for="Slug" class="form-control" 
+                                                   placeholder="url-friendly-slug" readonly>
+                                        </div>
+                                        <span asp-validation-for="Slug" class="text-danger small"></span>
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle text-info me-1"></i>
+                                            URL slug is automatically generated from the title
+                                        </div>
+                                    </div>
+
+                                    <!-- Excerpt -->
+                                    <div class="mb-4">
+                                        <label asp-for="Excerpt" class="form-label fw-bold">
+                                            <i class="fas fa-quote-left text-primary me-2"></i>
+                                            Post Excerpt
+                                        </label>
+                                        <textarea asp-for="Excerpt" class="form-control" rows="3" 
+                                                  placeholder="Write a compelling summary that will appear in search results and post previews..." required></textarea>
+                                        <span asp-validation-for="Excerpt" class="text-danger small"></span>
+                                        <div class="form-text">
+                                            <i class="fas fa-search text-success me-1"></i>
+                                            This excerpt will appear in search results and social media previews
+                                        </div>
+                                    </div>
+
+                                    <!-- Content -->
+                                    <div class="mb-4">
+                                        <label asp-for="Content" class="form-label fw-bold">
+                                            <i class="fas fa-file-alt text-primary me-2"></i>
+                                            Post Content
+                                        </label>
+                                        <div class="editor-toolbar mb-2">
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <button type="button" class="btn btn-outline-secondary" onclick="formatText('bold')" title="Bold">
+                                                    <i class="fas fa-bold"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="formatText('italic')" title="Italic">
+                                                    <i class="fas fa-italic"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="formatText('underline')" title="Underline">
+                                                    <i class="fas fa-underline"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="insertLink()" title="Insert Link">
+                                                    <i class="fas fa-link"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="insertImage()" title="Insert Image">
+                                                    <i class="fas fa-image"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <textarea asp-for="Content" class="form-control content-editor" rows="15" 
+                                                  placeholder="Write your blog post content here. You can use HTML tags for formatting..." required></textarea>
+                                        <span asp-validation-for="Content" class="text-danger small"></span>
+                                        <div class="form-text">
+                                            <i class="fas fa-code text-info me-1"></i>
+                                            You can use HTML tags for rich formatting. Use the toolbar above for quick formatting.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <!-- Publishing Options -->
+                                    <div class="card border-primary mb-4">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-cog me-2"></i>
+                                                Publishing Options
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Blog Selection -->
+                                            <div class="mb-3">
+                                                <label asp-for="BlogId" class="form-label fw-bold">
+                                                    <i class="fas fa-blog text-primary me-2"></i>
+                                                    Blog
+                                                </label>
+                                                <select asp-for="BlogId" class="form-select" required>
+                                                    <option value="">Select a blog...</option>
+                                                    @if (Model.UserBlogs != null)
+                                                    {
+                                                        @foreach (var blog in Model.UserBlogs)
+                                                        {
+                                                            <option value="@blog.Id">@blog.Title</option>
+                                                        }
+                                                    }
+                                                </select>
+                                                <span asp-validation-for="BlogId" class="text-danger small"></span>
+                                            </div>
+
+                                            <!-- Category -->
+                                            <div class="mb-3">
+                                                <label asp-for="CategoryId" class="form-label fw-bold">
+                                                    <i class="fas fa-folder text-primary me-2"></i>
+                                                    Category
+                                                </label>
+                                                <select asp-for="CategoryId" class="form-select" required>
+                                                    <option value="">Select a category...</option>
+                                                    @if (Model.Categories != null)
+                                                    {
+                                                        @foreach (var category in Model.Categories)
+                                                        {
+                                                            <option value="@category.Id">@category.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                                <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                                            </div>
+
+                                            <!-- Tags -->
+                                            <div class="mb-3">
+                                                <label asp-for="Tags" class="form-label fw-bold">
+                                                    <i class="fas fa-tags text-primary me-2"></i>
+                                                    Tags
+                                                </label>
+                                                <input asp-for="Tags" class="form-control" 
+                                                       placeholder="technology, programming, web development">
+                                                <span asp-validation-for="Tags" class="text-danger small"></span>
+                                                <div class="form-text">Separate tags with commas</div>
+                                            </div>
+
+                                            <!-- Status Toggles -->
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input asp-for="IsPublished" class="form-check-input" type="checkbox" id="isPublished">
+                                                    <label class="form-check-label fw-bold" for="isPublished">
+                                                        <i class="fas fa-eye text-success me-2"></i>
+                                                        Published
+                                                    </label>
+                                                </div>
+                                                <div class="form-text">Uncheck to save as draft</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    <input asp-for="IsFeatured" class="form-check-input" type="checkbox" id="isFeatured">
+                                                    <label class="form-check-label fw-bold" for="isFeatured">
+                                                        <i class="fas fa-star text-warning me-2"></i>
+                                                        Featured Post
+                                                    </label>
+                                                </div>
+                                                <div class="form-text">Featured posts appear prominently</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SEO and Media -->
+                                    <div class="card border-secondary mb-4">
+                                        <div class="card-header bg-secondary text-white">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-search me-2"></i>
+                                                SEO & Media
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Featured Image -->
+                                            <div class="mb-3">
+                                                <label asp-for="FeaturedImageUrl" class="form-label fw-bold">
+                                                    <i class="fas fa-image text-primary me-2"></i>
+                                                    Featured Image URL
+                                                </label>
+                                                <input asp-for="FeaturedImageUrl" class="form-control" 
+                                                       placeholder="https://example.com/image.jpg">
+                                                <span asp-validation-for="FeaturedImageUrl" class="text-danger small"></span>
+                                                <div class="form-text">URL of the main image for this post</div>
+                                            </div>
+
+                                            <!-- Meta Description -->
+                                            <div class="mb-3">
+                                                <label asp-for="MetaDescription" class="form-label fw-bold">
+                                                    <i class="fas fa-file-text text-primary me-2"></i>
+                                                    Meta Description
+                                                </label>
+                                                <textarea asp-for="MetaDescription" class="form-control" rows="3" 
+                                                          placeholder="SEO-friendly description for search engines..."></textarea>
+                                                <span asp-validation-for="MetaDescription" class="text-danger small"></span>
+                                                <div class="form-text">Appears in search engine results</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Post Stats -->
+                                    <div class="card border-info">
+                                        <div class="card-header bg-info text-white">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-chart-bar me-2"></i>
+                                                Post Statistics
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row text-center">
+                                                <div class="col-6">
+                                                    <div class="stat-item">
+                                                        <i class="fas fa-calendar text-primary mb-2"></i>
+                                                        <h6>Created</h6>
+                                                        <small class="text-muted">@Model.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="stat-item">
+                                                        <i class="fas fa-eye text-success mb-2"></i>
+                                                        <h6>Views</h6>
+                                                        <small class="text-muted">@Model.ViewCount.ToString("N0")</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center pt-4 border-top">
+                                        <div>
+                                            <a asp-action="Post" asp-route-slug="@Model.Slug" class="btn btn-outline-secondary">
+                                                <i class="fas fa-eye me-2"></i>
+                                                Preview Post
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary me-2">
+                                                <i class="fas fa-times me-2"></i>
+                                                Cancel
+                                            </a>
+                                            <button type="submit" class="btn btn-primary btn-lg">
+                                                <i class="fas fa-save me-2"></i>
+                                                Update Post
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Auto-generate slug from title
+        document.getElementById('Title').addEventListener('input', function() {
+            const title = this.value;
+            const slug = title.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+            document.getElementById('Slug').value = slug;
+        });
+
+        // Simple text formatting functions
+        function formatText(command) {
+            const textarea = document.querySelector('.content-editor');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            if (selectedText) {
+                let formattedText = '';
+                switch(command) {
+                    case 'bold':
+                        formattedText = `<strong>${selectedText}</strong>`;
+                        break;
+                    case 'italic':
+                        formattedText = `<em>${selectedText}</em>`;
+                        break;
+                    case 'underline':
+                        formattedText = `<u>${selectedText}</u>`;
+                        break;
+                }
+                
+                textarea.setRangeText(formattedText, start, end, 'end');
+                textarea.focus();
+            }
+        }
+
+        function insertLink() {
+            const textarea = document.querySelector('.content-editor');
+            const url = prompt('Enter the URL:');
+            const linkText = prompt('Enter the link text:');
+            
+            if (url && linkText) {
+                const link = `<a href="${url}" target="_blank">${linkText}</a>`;
+                const start = textarea.selectionStart;
+                textarea.setRangeText(link, start, start, 'end');
+                textarea.focus();
+            }
+        }
+
+        function insertImage() {
+            const textarea = document.querySelector('.content-editor');
+            const url = prompt('Enter the image URL:');
+            const alt = prompt('Enter the alt text:');
+            
+            if (url && alt) {
+                const img = `<img src="${url}" alt="${alt}" class="img-fluid rounded mb-3">`;
+                const start = textarea.selectionStart;
+                textarea.setRangeText(img, start, start, 'end');
+                textarea.focus();
+            }
+        }
+
+        // Auto-resize textarea
+        document.querySelector('.content-editor').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+    
+    .card {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+    }
+    
+    .editor-toolbar {
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    
+    .content-editor {
+        min-height: 300px;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 14px;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-item i {
+        display: block;
+        font-size: 1.5rem;
+    }
+    
+    .form-switch .form-check-input {
+        width: 3rem;
+        height: 1.5rem;
+    }
+    
+    .alert {
+        border-radius: 10px;
+    }
+    
+    .btn {
+        border-radius: 8px;
+    }
+</style>

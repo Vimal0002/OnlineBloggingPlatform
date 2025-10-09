@@ -20,8 +20,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Copy the database file
-COPY OnlineBloggingPlatform.db .
+# Database will be created automatically by the application if it doesn't exist
+# The seeding logic in Program.cs will handle initial data
 
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production

@@ -54,4 +54,10 @@ namespace OnlineBloggingPlatform.ViewModels
         [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
     }
+
+    public class ErrorViewModel
+    {
+        public string? RequestId { get; set; }
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    }
 }
