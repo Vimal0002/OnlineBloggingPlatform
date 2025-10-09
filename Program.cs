@@ -43,6 +43,7 @@ builder.Services.AddScoped<IRepository<Blog>, Repository<Blog>>();
 
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IHtmlSanitizationService, HtmlSanitizationService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 builder.Services.AddControllersWithViews(options =>
 {

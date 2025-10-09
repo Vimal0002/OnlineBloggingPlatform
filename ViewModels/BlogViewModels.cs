@@ -95,4 +95,23 @@ namespace OnlineBloggingPlatform.ViewModels
         public int TotalPages { get; set; }
     }
 
+    public class UserDashboardViewModel
+    {
+        public ApplicationUser User { get; set; } = null!;
+        public UserStatisticsViewModel Statistics { get; set; } = null!;
+        public IEnumerable<BlogPost> RecentPosts { get; set; } = new List<BlogPost>();
+        public IEnumerable<Blog> UserBlogs { get; set; } = new List<Blog>();
+    }
+
+    public class UserStatisticsViewModel
+    {
+        public int TotalPosts { get; set; }
+        public int TotalViews { get; set; }
+        public int TotalBlogs { get; set; }
+        public int FeaturedPosts { get; set; }
+        public int PublishedPosts { get; set; }
+        public int DraftPosts { get; set; }
+        public int TotalComments { get; set; }
+    }
+
 }
